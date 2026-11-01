@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0a0e14">
 <title>🇨🇭 6-0: Tour de Romandie Draft — Can You Sweep Swiss Cycling?</title>
 <meta name="description" content="Draft legendary Tour de Romandie cyclists across 6 eras and try to win every stage in a 6-stage Tour de Romandie. 84 legends. 6 eras. 6 stages. 1 goal: 6-0.">
@@ -150,6 +150,11 @@
     transition: all 0.15s;
     position: relative;
     user-select: none;
+  }
+  button.driver-card {
+    color: inherit;
+    font: inherit;
+    text-align: left;
   }
   .driver-card:hover:not(.drafted):not(.disabled) {
     border-color: var(--accent);
@@ -444,6 +449,8 @@
     padding: 4px;
   }
   .roster-chip {
+    border: none;
+    font-family: inherit;
     background: var(--accent);
     color: #000;
     padding: 4px 10px;
@@ -501,7 +508,7 @@
 
     <div class="panel" id="race-panel">
       <div style="text-align:center; padding:20px;">
-        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:6px;">STAGE <span id="race-counter">1</span> OF 7</div>
+        <div style="font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-bottom:6px;">STAGE <span id="race-counter">1</span> OF 6</div>
         <div id="race-title" style="font-size:22px; font-weight:900; color:var(--accent2); margin-bottom:4px;">—</div>
         <div id="race-track" style="font-size:13px; color:var(--muted); margin-bottom:16px;">—</div>
         <button class="btn" id="race-btn">▶ Simulate Race</button>
@@ -539,7 +546,7 @@
       </details>
 
       <details>
-        <summary>📜 Full Season Log (All 7 Stages)</summary>
+        <summary>📜 Full Season Log (All 6 Stages)</summary>
         <div class="race-log" id="finale-log"></div>
       </details>
 
@@ -557,9 +564,9 @@
     <a href="https://github.com/TeapoyY/tour-de-france-21-draft" style="color:var(--accent);">7-0</a>,
     <a href="https://github.com/TeapoyY/indycar-17-draft" style="color:var(--accent);">17-0</a>,
     <a href="https://github.com/TeapoyY/formulae-17-draft" style="color:var(--accent);">17-0 ⚡</a>,
-    <a href="https://github.com/TeapoyY/motogp-20-draft" style="color:var(--accent);">20-0 🏍️</a>,
+    <a href="https://github.com/TeapoyY/motogp-20-draft" style="color:var(--accent);">20-0 🏍&#xfe0f;</a>,
     <a href="https://github.com/TeapoyY/endurance-24-draft" style="color:var(--accent);">24-0 🏁</a>,
-    <a href="https://github.com/TeapoyY/wrc-13-draft" style="color:var(--accent);">13-0 🏔️</a>,
+    <a href="https://github.com/TeapoyY/wrc-13-draft" style="color:var(--accent);">13-0 🏔&#xfe0f;</a>,
     <a href="https://github.com/TeapoyY/giro-23-draft" style="color:var(--accent);">23-0 🌹</a>,
     <a href="https://github.com/TeapoyY/critérium du dauphiné-21-draft" style="color:var(--accent);">7-0 🔴</a> drafting lineage.
   </div>
@@ -686,6 +693,10 @@ const DRIVERS = [
     { name: "Maxim Van Gils", era: 6, pos: "HILL", ovr: 87 }
 ];
 
+DRIVERS.forEach((driver, index) => {
+    driver.id = index + 1;
+});
+
 const ERA_NAMES = {
     1: "1933-1959",
     2: "1960-1979",
@@ -749,7 +760,7 @@ function winProb(ovr, raceType, isSuperspeedway) {
         'cobbles': -0.05,    // pavé chaos, punctures, luck
         'rest':    -0.99     // rest day = no race
     };
-    base += (bonuses[raceType] || 0);
+    base += (bonuses[raceType.toLowerCase()] || 0);
 
     return Math.min(0.97, Math.max(0.03, base));
 }
@@ -857,7 +868,8 @@ function renderDrivers() {
     const drivers = DRIVERS.filter(d => d.era === state.selectedEra);
     drivers.forEach(d => {
         const drafted = state.drafted.some(x => x.id === d.id);
-        const card = document.createElement('div');
+        const card = document.createElement('button');
+        card.type = 'button';
         card.className = 'driver-card' + (drafted ? ' drafted' : '');
         card.innerHTML = `
             <div class="ovr">${d.ovr}</div>
@@ -903,12 +915,12 @@ function updateDraftUI() {
         countText.textContent = 'Pick 5 Tour de Romandie legends';
         helpText.textContent = 'Tap a driver to draft. Mix eras for synergy bonuses.';
         status.classList.remove('full');
-    } else if (n < 6) {
+    } else if (n < 5) {
         countText.textContent = `${n}/5 drivers drafted`;
-        helpText.textContent = `Pick ${6 - n} more. Avg OVR: ${$('stat-avg').textContent}`;
+        helpText.textContent = `Pick ${5 - n} more. Avg OVR: ${$('stat-avg').textContent}`;
         status.classList.remove('full');
     } else {
-        countText.textContent = '🏎️ Roster Complete!';
+        countText.textContent = '🏎\uFE0F Roster Complete!';
         helpText.textContent = `Avg OVR: ${$('stat-avg').textContent} (incl +${eraSynergy(state.drafted).toFixed(1)} era synergy)`;
         status.classList.add('full');
     }
@@ -921,7 +933,8 @@ function updateDraftUI() {
         rosterDiv.className = 'roster';
         rosterDiv.style.marginTop = '10px';
         state.drafted.forEach(d => {
-            const chip = document.createElement('span');
+            const chip = document.createElement('button');
+            chip.type = 'button';
             chip.className = 'roster-chip';
             chip.textContent = `${d.name} ${d.ovr}`;
             chip.onclick = () => undraftDriver(d.id);
@@ -960,6 +973,9 @@ $('start-btn').onclick = () => {
     state.season.standings[state.season.primaryDriver.id] = 0;
     state.drafted.forEach(d => state.season.standings[d.id] = 0);
 
+    ['season-wins', 'season-streak', 'season-points'].forEach(id => {
+        $(id).textContent = '0';
+    });
     switchScreen('season');
     $('race-counter').textContent = '1';
     $('race-counter-end') && ($('race-counter-end').textContent = '1');
@@ -976,7 +992,7 @@ function showNextRace() {
     $('race-counter').textContent = (i + 1);
     $('season-race-num').textContent = (i + 1);
     $('race-title').textContent = race.name;
-    $('race-track').textContent = `${race.city} · ${race.type}`;
+    $('race-track').textContent = `${race.desc} · ${race.type}`;
     show('race-btn');
     hide('race-next-row');
     hide('race-detail');
@@ -1083,19 +1099,19 @@ function showFinale() {
 
     // Title
     let title = '';
-    if (wins === 20) title = `🏆 UNDEFEATED — ${totalStages}-0 GRAND CHELEM!`;
-    else if (wins >= 17) title = `🏆 ELITE — ${wins} stage wins`;
-    else if (wins >= 14) title = `🇨🇭 DOMINATOR — ${wins} stage wins`;
-    else if (wins >= 10) title = `🏔️ ALPINE — ${wins} stage wins`;
+    if (wins === totalStages) title = `🏆 UNDEFEATED — ${totalStages}-0 GRAND CHELEM!`;
+    else if (wins >= 5) title = `🏆 ELITE — ${wins} stage wins`;
+    else if (wins >= 4) title = `🇨🇭 DOMINATOR — ${wins} stage wins`;
+    else if (wins >= 3) title = `🏔\uFE0F ALPINE — ${wins} stage wins`;
     else title = `${wins} stage wins — Try a stronger roster next time`;
     $('finale-title').textContent = title;
 
     // Badges
     let badgesHTML = '';
-    if (wins === 20) badgesHTML += '<span class="badge gold">⭐ Romandie Sweep — Tour de Romandie Complete</span>';
+    if (wins === totalStages) badgesHTML += '<span class="badge gold">⭐ Romandie Sweep — Tour de Romandie Complete</span>';
     if (state.season.bestStreak >= 6) badgesHTML += `<span class="badge green">🔥 ${state.season.bestStreak}-Race Streak</span>`;
-    if (wins >= 13) badgesHTML += '<span class="badge green">Title Contender</span>';
-    if (wins < 6) badgesHTML += '<span class="badge red">Rebuild Year</span>';
+    if (wins >= 4) badgesHTML += '<span class="badge green">Title Contender</span>';
+    if (wins < 3) badgesHTML += '<span class="badge red">Rebuild Year</span>';
     $('finale-badges').innerHTML = badgesHTML;
 
     // Podium (top 3 drafted drivers by points, but player = primary driver)

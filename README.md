@@ -21,15 +21,15 @@ Tour de Romandie is a week-long UCI World Tour stage race held in the French-spe
 | 4 | Tour de Suisse 8-0 (🇨🇭) | ✅ TeapoyY/tour-de-suisse-8-draft |
 | 5 | Crit. du Dauphiné 8-0 (🇫🇷) | ✅ TeapoyY/criterium-du-dauphine-8-draft |
 | 6 | Vuelta a España 21-0 (🔴) | ✅ TeapoyY/vuelta-21-draft |
-| 7 | IndyCar 17-0 (🏎️) | ✅ TeapoyY/indycar-17-draft |
+| 7 | IndyCar 17-0 (🏎) | ✅ TeapoyY/indycar-17-draft |
 | 8 | Formula E 17-0 (⚡) | ✅ TeapoyY/formulae-17-draft |
-| 9 | MotoGP 20-0 (🏍️) | ✅ TeapoyY/motogp-20-draft |
+| 9 | MotoGP 20-0 (🏍) | ✅ TeapoyY/motogp-20-draft |
 | 10 | Endurance 24-0 (🏁) | ✅ TeapoyY/endurance-24-draft |
-| 11 | WRC 13-0 (🏔️) | ✅ TeapoyY/wrc-13-draft |
+| 11 | WRC 13-0 (🏔) | ✅ TeapoyY/wrc-13-draft |
 | 12 | Giro d'Italia 23-0 (🌹) | ✅ TeapoyY/giro-23-draft |
 | 13 | Cycling Monuments 5-0 (🏆) | ✅ TeapoyY/monuments-5-draft |
 | 14 | Tirreno-Adriatico 7-0 (🔵) | ✅ TeapoyY/tirreno-adriatico-7-draft |
-| 15 | Paris-Nice 8-0 (☀️) | ✅ TeapoyY/paris-nice-8-draft |
+| 15 | Paris-Nice 8-0 (☀) | ✅ TeapoyY/paris-nice-8-draft |
 | 16 | Volta a Catalunya 7-0 (🏴󠁥󠁳󠁣󠁴󠁿) | ✅ TeapoyY/volta-a-catalunya-7-draft |
 | 17 | Tour de Romandie 6-0 (🇨🇭) | ✅ This repo (NEW) |
 
